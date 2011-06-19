@@ -8,7 +8,7 @@
 #include <vector>
 #include <map>
 using namespace std;
-using namespace LATCH_PRIORITIES;
+using namespace LATCH;
 
 #ifdef __GNUC__
     #include <pthread.h>
@@ -23,7 +23,7 @@ void latch::_eval_next() {
         _eval_mutex.lock();
         _data_mutex.lock();
 
-        PRIORITY highest_priority_waiting = HIGHEST;
+        PRIORITY highest_priority_waiting = HIGHEST_PRIORITY;
         for (int i=PRIORITIES_COUNT-1;i>=0;i--) {
             if (_priorities_waiting_count[i] > 0) {
                 highest_priority_waiting = (PRIORITY)i;
@@ -33,7 +33,7 @@ void latch::_eval_next() {
 
         vector<THREAD_ID>::const_iterator it = _wait_queue.begin();
         vector<THREAD_ID>::const_iterator end = _wait_queue.end();
-        PRIORITY highest_priority_found = LOWEST;
+        PRIORITY highest_priority_found = LOWEST_PRIORITY;
         THREAD_ID next_thread = 0;
         if (it != end) next_thread = *it;
 

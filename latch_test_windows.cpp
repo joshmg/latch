@@ -10,13 +10,13 @@
 #include <string>
 using namespace std;
 
-latch my_lock;
+LATCH::latch my_lock;
 
 const unsigned int iterations = 100;
 volatile unsigned int count = 0;
 volatile unsigned int count_max = 0;
 
-const LATCH_PRIORITIES::PRIORITY PRIORITIES[] = { LATCH_PRIORITIES::LOWEST, LATCH_PRIORITIES::LOW, LATCH_PRIORITIES::MEDIUM, LATCH_PRIORITIES::HIGH, LATCH_PRIORITIES::HIGHEST };
+const LATCH::PRIORITY PRIORITIES[] = { LATCH::LOWEST_PRIORITY, LATCH::LOW_PRIORITY, LATCH::MEDIUM_PRIORITY, LATCH::HIGH_PRIORITY, LATCH::HIGHEST_PRIORITY };
 string priority_names[] = { "LOWEST", "LOW", "MEDIUM", "HIGH", "HIGHEST" };
 
 void latch_test(void* p) {
