@@ -7,48 +7,31 @@
 #include <process.h>
 #include <cstdlib>
 #include <time.h>
+#include <string>
 using namespace std;
 
 latch my_lock;
 
+const unsigned int iterations = 100;
+volatile unsigned int count = 0;
+volatile unsigned int count_max = 0;
+
 const LATCH_PRIORITIES::PRIORITY PRIORITIES[] = { LATCH_PRIORITIES::LOWEST, LATCH_PRIORITIES::LOW, LATCH_PRIORITIES::MEDIUM, LATCH_PRIORITIES::HIGH, LATCH_PRIORITIES::HIGHEST };
-
-void latch_test_high_priority(void* p) {
-    for (int i=0;i<50;i++) {
-
-        my_lock.lock(LATCH_PRIORITIES::HIGHEST);
-        cout << "[HIGHEST] Locked." << endl;
-
-        suspend(100);
-
-        my_lock.unlock();
-        cout << "[HIGHEST] UnLocked." << endl;
-    }
-}
-
-void latch_test_low_priority(void* p) {
-    for (int i=0;i<50;i++) {
-
-        my_lock.lock(LATCH_PRIORITIES::LOWEST);
-        cout << "[LOWEST] Locked." << endl;
-
-        suspend(1000);
-
-        my_lock.unlock();
-        cout << "[LOWEST] UnLocked." << endl;
-    }
-}
+string priority_names[] = { "LOWEST", "LOW", "MEDIUM", "HIGH", "HIGHEST" };
 
 void latch_test(void* p) {
-    for (int i=0;i<100;i++) {
+    for (unsigned int i=0;i<iterations;i++) {
+        int priority = ((int)p);
+        if (priority > 4) priority = rand()%5;
 
-        my_lock.lock(PRIORITIES[rand()%5]);
-        cout << "Locked." << endl;
+        my_lock.lock(PRIORITIES[priority]);
+        cout << "[" << priority_names[priority] << "] Locked." << endl;
 
-        suspend(0);
+        ++count;
+        //suspend(0);
 
         my_lock.unlock();
-        cout << "UnLocked." << endl;
+        cout << "[" << priority_names[priority] << "] UnLocked." << endl;
     }
 }
 
@@ -56,14 +39,18 @@ int main() {
     srand(time(0));
     cout << "Created lock." << endl;
 
-    _beginthread(&latch_test_high_priority, 0, (void*)0);
-    _beginthread(&latch_test_high_priority, 0, (void*)0);
-    _beginthread(&latch_test_low_priority,  0, (void*)0);
-    _beginthread(&latch_test_high_priority, 0, (void*)0);
-    _beginthread(&latch_test_high_priority, 0, (void*)0);
+    _beginthread(&latch_test, 0, (void*)5);    ++count_max;
+    _beginthread(&latch_test, 0, (void*)2);    ++count_max;
+    _beginthread(&latch_test, 0, (void*)2);    ++count_max;
+    _beginthread(&latch_test, 0, (void*)2);    ++count_max;
+    _beginthread(&latch_test, 0, (void*)2);    ++count_max;
+    _beginthread(&latch_test, 0, (void*)0);    ++count_max;
 
-    char c;
-    cin >> c;
+    while (count < count_max*iterations) {
+        cout << (count/((float)count_max*iterations))*100.0 << "%" << endl;
+        suspend(1000);
+    }
+    cout << "Done." << endl;
 
     return 0;
 }

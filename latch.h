@@ -15,6 +15,7 @@
 #endif
 
 namespace LATCH_PRIORITIES {
+    #define PRIORITIES_COUNT 5
     enum PRIORITY { LOWEST=0, LOW, MEDIUM, HIGH, HIGHEST };
 }
 
@@ -29,6 +30,7 @@ class latch {
         mutex _eval_mutex;
         volatile bool _cached_next_is_valid;
         THREAD_ID _cached_next;
+        int _priorities_waiting_count[PRIORITIES_COUNT];
         void _eval_next();
     public:
         latch();
