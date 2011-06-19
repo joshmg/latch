@@ -1,0 +1,6 @@
+Written by Joshua Green
+This software is free but comes with no warranty.
+
+The mutex class is a portable mutex tested on Windows 7 with MS Visual Studio Version 16.00.30319.01 for 80x86, and on Debian with GCC Version 4.3.1. Each were tested under 64 bit under 32 bit settings.
+
+The latch class is a portable mutex with locking priority flags; it has been tested on Windows 7 with MS Visual Studio Version 16.00.30319.01 for 80x86, and on Debian with GCC Version 4.3.1. Each were tested under 64 bit under 32 bit settings.
