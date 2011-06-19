@@ -40,9 +40,9 @@ int main() {
     cout << "Created lock." << endl;
 
     _beginthread(&latch_test, 0, (void*)5);    ++count_max;
-    _beginthread(&latch_test, 0, (void*)2);    ++count_max;
-    _beginthread(&latch_test, 0, (void*)2);    ++count_max;
-    _beginthread(&latch_test, 0, (void*)2);    ++count_max;
+    _beginthread(&latch_test, 0, (void*)3);    ++count_max;
+    _beginthread(&latch_test, 0, (void*)4);    ++count_max;
+    _beginthread(&latch_test, 0, (void*)1);    ++count_max;
     _beginthread(&latch_test, 0, (void*)2);    ++count_max;
     _beginthread(&latch_test, 0, (void*)0);    ++count_max;
 

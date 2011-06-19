@@ -7,7 +7,6 @@
 #include "atomic_if_then_assign.h"
 #include <vector>
 #include <map>
-#include <iostream>
 using namespace std;
 using namespace LATCH_PRIORITIES;
 
